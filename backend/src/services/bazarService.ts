@@ -5,8 +5,8 @@ import {
   updateBazarStatus,
   deleteBazarEntry,
   type BazarEntryFull,
-  type EntryStatus,
 } from "../repositories/bazarRepository";
+import type { EntryStatus } from "../repositories/mealRepository";
 import { getMemberByUserId } from "../repositories/memberRepository";
 
 export async function listBazarEntries(month: number, year: number): Promise<BazarEntryFull[]> {
