@@ -1,0 +1,403 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   CSS Custom Properties
+───────────────────────────────────────────────────────────── */
+:root {
+  --red:          #EF4444;
+  --red-deep:     #991B1B;
+  --red-glow:     rgba(239, 68, 68, 0.35);
+  --red-glow-sm:  rgba(239, 68, 68, 0.18);
+  --card-bg:      rgba(16, 16, 16, 0.90);
+  --border-red:   rgba(239, 68, 68, 0.18);
+  --border-white: rgba(255, 255, 255, 0.06);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Global Dark Base
+───────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { background-color: #030303; color: #fff; }
+  body { background-color: #030303; color: #fff; min-height: 100vh; }
+
+  /* Select options */
+  option { background-color: #181818; color: #fff; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Ambient red glow orbs (fixed, behind all content)
+───────────────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 35% at 12% 30%,  rgba(239,68,68,0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 28% at 88% 12%,  rgba(239,68,68,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 65% 45% at 55% 85%,  rgba(153,27,27,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 25% at 75% 55%,  rgba(239,68,68,0.04) 0%, transparent 50%);
+}
+
+/* Subtle dot-grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Ensure page content is above background layers */
+#root { position: relative; z-index: 1; }
+
+/* Active nav tab — red glow pill */
+.bg-red-600\/20 {
+  background: rgba(239, 68, 68, 0.14) !important;
+  box-shadow:
+    0 0 14px rgba(239, 68, 68, 0.2),
+    inset 0 0 10px rgba(239, 68, 68, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Glassmorphism Cards (targets rounded-2xl dark cards)
+───────────────────────────────────────────────────────────── */
+.rounded-2xl.bg-\[#181818\] {
+  background: var(--card-bg) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border-color: var(--border-red) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.rounded-2xl.bg-\[#181818\]:hover {
+  border-color: rgba(239, 68, 68, 0.30) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 0 28px rgba(239, 68, 68, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Modals get stronger glow */
+.rounded-2xl.bg-\[#181818\].shadow-2xl {
+  box-shadow:
+    0 0 0 1px rgba(239, 68, 68, 0.22),
+    0 25px 50px rgba(0, 0, 0, 0.75),
+    0 0 60px rgba(239, 68, 68, 0.10);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Red buttons — gradient + glow
+───────────────────────────────────────────────────────────── */
+button.bg-red-600,
+a.bg-red-600 {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 60%, #B91C1C 100%) !important;
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.38), 0 1px 3px rgba(0,0,0,0.3);
+  transition: box-shadow 0.2s ease, transform 0.15s ease !important;
+}
+
+button.bg-red-600:hover:not(:disabled),
+a.bg-red-600:hover {
+  background: linear-gradient(135deg, #F87171 0%, #EF4444 60%, #DC2626 100%) !important;
+  box-shadow: 0 6px 28px rgba(239, 68, 68, 0.55), 0 2px 6px rgba(0,0,0,0.3);
+  transform: translateY(-1.5px);
+}
+
+button.bg-red-600:active:not(:disabled),
+a.bg-red-600:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 12px rgba(239, 68, 68, 0.30);
+}
+
+button.bg-red-600:disabled {
+  opacity: 0.45;
+  transform: none;
+}
+
+/* Red-700 buttons (hover target for red-600) */
+button.bg-red-700 {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Table rows — red left accent on hover
+───────────────────────────────────────────────────────────── */
+tbody tr {
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+tbody tr:hover {
+  box-shadow: inset 3px 0 0 rgba(239, 68, 68, 0.55);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Inputs — red focus glow
+───────────────────────────────────────────────────────────── */
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.18) !important;
+  outline: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Profile dropdown animation
+───────────────────────────────────────────────────────────── */
+.relative > .absolute.rounded-2xl {
+  animation: dropdown-enter 0.14s ease-out both;
+  transform-origin: top right;
+}
+
+@keyframes dropdown-enter {
+  from { opacity: 0; transform: scale(0.95) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Modal backdrop fade
+───────────────────────────────────────────────────────────── */
+.fixed.inset-0.z-50,
+.fixed.inset-0.z-\[9999\] {
+  animation: backdrop-fade 0.18s ease-out both;
+}
+
+@keyframes backdrop-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fixed.inset-0.z-50 > .rounded-2xl,
+.fixed.inset-0.z-\[9999\] > .rounded-2xl {
+  animation: modal-enter 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes modal-enter {
+  from { opacity: 0; transform: scale(0.93) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Stat cards — red left border glow
+───────────────────────────────────────────────────────────── */
+.border-l-4.border-l-red-600 {
+  border-left-color: #EF4444 !important;
+  box-shadow: -4px 0 16px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Scrollbars
+───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(239, 68, 68, 0.65); }
+
+/* Hide scrollbar on overflowing mobile nav */
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ─────────────────────────────────────────────────────────────
+   Summary page hero background
+───────────────────────────────────────────────────────────── */
+.summary-bg {
+  background-image: url('/imag_3.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Cards on the Summary page — very transparent black glass */
+.summary-page .rounded-2xl.bg-\[#181818\] {
+  background: rgba(0, 0, 0, 0.28) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border-color: rgba(239, 68, 68, 0.40) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.summary-page .rounded-2xl.bg-\[#181818\]:hover {
+  border-color: rgba(239, 68, 68, 0.65) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.10),
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 45px rgba(220, 38, 38, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Stat card left-border glow */
+.summary-page .border-l-4.border-l-red-600 {
+  box-shadow: -4px 0 22px rgba(239, 68, 68, 0.45) !important;
+}
+
+/* Inner surfaces — very light so image shows */
+.summary-page .bg-\[#111111\] {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Skeleton pulses */
+.summary-page .bg-\[#2A2A2A\] {
+  background: rgba(20, 5, 5, 0.45) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Meals page hero background (fire horse)
+───────────────────────────────────────────────────────────── */
+.meals-bg {
+  background-image: url('/img_4.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.meals-page .rounded-2xl.bg-\[#181818\] {
+  background: rgba(0, 0, 0, 0.38) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.meals-page .rounded-2xl.bg-\[#181818\]:hover {
+  border-color: rgba(239, 68, 68, 0.60) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 8px 32px rgba(0, 0, 0, 0.50),
+    0 0 40px rgba(220, 38, 38, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.meals-page .bg-\[#111111\] { background: rgba(0, 0, 0, 0.45) !important; }
+.meals-page .bg-\[#2A2A2A\] { background: rgba(20, 5, 5, 0.50) !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   Members page hero background (fire horse)
+───────────────────────────────────────────────────────────── */
+.members-bg {
+  background-image: url('/img_4.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.members-page .rounded-2xl.bg-\[#181818\] {
+  background: rgba(0, 0, 0, 0.38) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.members-page .rounded-2xl.bg-\[#181818\]:hover {
+  border-color: rgba(239, 68, 68, 0.60) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 8px 32px rgba(0, 0, 0, 0.50),
+    0 0 40px rgba(220, 38, 38, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.members-page .bg-\[#111111\] { background: rgba(0, 0, 0, 0.45) !important; }
+.members-page .bg-\[#2A2A2A\] { background: rgba(20, 5, 5, 0.50) !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   My Meal page hero background (fire dancer)
+───────────────────────────────────────────────────────────── */
+.mymeal-bg {
+  background-image: url('/img_1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.mymeal-page .rounded-2xl.bg-\[#181818\] {
+  background: rgba(0, 0, 0, 0.38) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.mymeal-page .rounded-2xl.bg-\[#181818\]:hover {
+  border-color: rgba(239, 68, 68, 0.60) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 8px 32px rgba(0, 0, 0, 0.50),
+    0 0 40px rgba(220, 38, 38, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.mymeal-page .bg-\[#111111\] { background: rgba(0, 0, 0, 0.45) !important; }
+.mymeal-page .bg-\[#2A2A2A\] { background: rgba(20, 5, 5, 0.50) !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   Bazar page hero background (red neural network)
+───────────────────────────────────────────────────────────── */
+.bazar-bg {
+  background-image: url('/img_5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Cards on the Bazar page — transparent black glass over the dark network bg */
+.bazar-page .rounded-2xl.bg-\[#181818\] {
+  background: rgba(0, 0, 0, 0.38) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bazar-page .rounded-2xl.bg-\[#181818\]:hover {
+  border-color: rgba(239, 68, 68, 0.60) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 8px 32px rgba(0, 0, 0, 0.50),
+    0 0 40px rgba(220, 38, 38, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Table header + expanded row inner bg */
+.bazar-page .bg-\[#111111\] {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Skeleton shimmer */
+.bazar-page .bg-\[#2A2A2A\] {
+  background: rgba(20, 5, 5, 0.50) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Avatar gradient — red style
+───────────────────────────────────────────────────────────── */
+.from-indigo-500.to-violet-600 {
+  --tw-gradient-from: #EF4444 !important;
+  --tw-gradient-to:   #991B1B !important;
+}

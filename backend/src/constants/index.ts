@@ -1,0 +1,1 @@
+export const DEFAULT_MONTHLY_ROOM_RENT = 12000;
