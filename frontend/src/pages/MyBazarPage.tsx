@@ -559,7 +559,7 @@ export function MyBazarPage() {
         )}
       </div>
 
-      {(modalEntry === "new" || (modalEntry && modalEntry !== "new")) && user && (
+      {modalEntry && user && (
         <MyBazarModal
           entry={modalEntry === "new" ? null : modalEntry}
           userId={user.id}
