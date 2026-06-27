@@ -41,6 +41,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: "Mess Manager API Docs",
 }));
 app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => {
   console.log(`Mess backend listening on port ${PORT}`);
