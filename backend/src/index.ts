@@ -17,10 +17,22 @@ import { swaggerSpec }   from "./swagger";
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 
+const ALLOWED_ORIGINS = [
+  process.env.FRONTEND_ORIGIN ?? "http://localhost:5173",
+  "http://localhost:5173",
+  /^https:\/\/mess-manager-.*\.vercel\.app$/,
+];
+
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      const allowed = ALLOWED_ORIGINS.some((o) =>
+        typeof o === "string" ? o === origin : o.test(origin)
+      );
+      callback(allowed ? null : new Error("CORS: origin not allowed"), allowed);
+    },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type"],
   })
